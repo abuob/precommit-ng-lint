@@ -1,21 +1,15 @@
 #! /usr/bin/env node
 
 import {getAngularProjects} from "./src/getAngularProjects";
+import {getStagedFilesPerProject} from "./src/getStagedFilesPerProject";
+import {filterByFileExtension} from "./src/filterByFileExtension";
 
 const sgf = require('staged-git-files');
 const npmWhich = require('npm-which')(process.cwd());
 const execSync = require('child_process').execSync;
-const findParentDir = require('find-parent-dir');
 
 
-getAngularProjects(process.cwd());
-
-//
-// findParentDir(__dirname, 'package.json', (err: any, dir: any) => {
-//     console.log('lulz: ', dir);
-// });
-//
-// sgf(['ACM'], (err: any, results) => {
+sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
 //     console.log('Linting staged files...');
 //     npmWhich('ng', (err, ngPath) => {
 //
@@ -37,4 +31,14 @@ getAngularProjects(process.cwd());
 //             process.exit(1);
 //         }
 //     });
-// });
+    const stagedFilePaths: string[] = results.map((file) => file.filename);
+    const filteredFilePaths = filterByFileExtension(stagedFilePaths, ['ts']);
+    const angularProjects = getAngularProjects(process.cwd());
+    const filesPerProject = getStagedFilesPerProject(filteredFilePaths, angularProjects);
+
+
+});
+
+interface IStagedGitFilesResult {
+    filename: string, status: 'Modified' | 'Changed' | 'Added'
+}

@@ -1,6 +1,6 @@
 const findParentDir = require('find-parent-dir');
 
-export function getAngularConfig(basePath: string): IAngularConfig {
+function getAngularConfig(basePath: string): IAngularConfig {
     const angularConfigPath = findParentDir.sync(basePath, 'angular.json');
     const angularConfig: IAngularConfig = require(angularConfigPath + '/angular.json');
     return angularConfig;
