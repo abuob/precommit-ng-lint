@@ -1,21 +1,25 @@
 const findParentDir = require('find-parent-dir');
-const pify = require('pify');
 
-export function getAngularConfig(basePath: string): Promise<IAngularConfig | null> {
-    // return pify(findParentDir)(basePath, 'angular.json').then((err: any, dir: string) => {
-    //     const angularConfig: IAngularConfig | null = require(dir + '/angular.json');
-    //     return angularConfig;
-    // });
-    findParentDir(basePath, 'angular.json', (err: any, dir: string) => {
-            const angularConfig: IAngularConfig | null = require(dir + '/angular.json');
-            console.log(angularConfig);
-    });
-    return Promise.resolve(null);
+export function getAngularConfig(basePath: string): IAngularConfig {
+    const angularConfigPath = findParentDir.sync(basePath, 'angular.json');
+    const angularConfig: IAngularConfig = require(angularConfigPath + '/angular.json');
+    return angularConfig;
+}
+
+function getConfigPath(projectDescription: any): string {
+    return (projectDescription.root ? projectDescription.root : "")
+        + (projectDescription.sourceRoot ? projectDescription.sourceRoot : "");
 }
 
 export function getAngularProjects(basePath: string): IAngularProject[] {
     const angularConfig = getAngularConfig(basePath);
-    return [];
+    const projects: string[] = Object.keys(angularConfig.projects);
+    return projects.map((project) => {
+        return {
+            name: project,
+            path: getConfigPath(angularConfig.projects[project])
+        };
+    });
 }
 
 export interface IAngularConfig {
