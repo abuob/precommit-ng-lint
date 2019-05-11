@@ -2,16 +2,29 @@
   "name": "precommit-ng-lint",
   "version": "0.0.1",
   "description": "Executes ng lint on all staged files",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": {
-    "precommit-ng-lint": "index.js"
+    "precommit-ng-lint": "dist/index.js"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+  },
   "author": "abuob",
   "license": "MIT",
   "dependencies": {
+    "find-parent-dir": "^0.3.0",
     "npm-which": "^3.0.1",
+    "pify": "^4.0.1",
     "staged-git-files": "^1.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^12.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
+  }
 }
