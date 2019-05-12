@@ -3,18 +3,26 @@
   "version": "0.0.1",
   "description": "Executes ng lint on all staged files",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "precommit-ng-lint": "dist/index.js"
   },
-  "scripts": {
-    "build": "tsc",
-    "test": "mocha -r ts-node/register test/**/*.spec.ts"
-  },
+  "keywords": [
+    "ng lint",
+    "precommit",
+    "husky",
+    "lint-staged"
+  ],
   "author": "abuob",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/abuob/precommit-ng-lint"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "prepublishOnly" : "npm test && npm run build"
   },
   "dependencies": {
     "find-parent-dir": "^0.3.0",
