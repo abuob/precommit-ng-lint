@@ -12,10 +12,13 @@
   },
   "author": "abuob",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abuob/precommit-ng-lint"
+  },
   "dependencies": {
     "find-parent-dir": "^0.3.0",
     "npm-which": "^3.0.1",
-    "pify": "^4.0.1",
     "staged-git-files": "^1.2.0"
   },
   "devDependencies": {
