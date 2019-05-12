@@ -8,6 +8,7 @@ describe('getStagedFilesPerProject', () => {
             { name: 'project-main', path: 'src' },
             { name: 'project-e2e', path: 'e2e/' },
             { name: 'project-common', path: 'projects/project-common' },
+            { name: 'no-match', path: 'projects/no-match' },
         ];
 
         const filePaths = [
@@ -22,6 +23,7 @@ describe('getStagedFilesPerProject', () => {
         const filesPerProject: IFilesPerProject[] = getStagedFilesPerProject(filePaths, projects);
 
         expect(filesPerProject).to.have.length(3);
+
         expect(filesPerProject[0].project.name).to.equal('project-main');
         expect(filesPerProject[0].files).to.have.same.members([
             'src/app/myCode.ts',

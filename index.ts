@@ -34,7 +34,7 @@ sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
     const stagedFilePaths: string[] = results.map((file) => file.filename);
     const filteredFilePaths = filterByFileExtension(stagedFilePaths, ['ts']);
     const angularProjects = getAngularProjects(process.cwd());
-    const filesPerProject = getStagedFilesPerProject(filteredFilePaths, angularProjects);
+    const filesPerProjectArray = getStagedFilesPerProject(filteredFilePaths, angularProjects);
 
 
 });
