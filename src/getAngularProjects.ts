@@ -6,25 +6,35 @@ function getAngularConfig(basePath: string): IAngularConfig {
     return angularConfig;
 }
 
-function getConfigPath(projectDescription: any): string {
+function getConfigPath(projectDescription: IAngularJsonProject): string {
     return (projectDescription.root ? projectDescription.root : "")
         + (projectDescription.sourceRoot ? projectDescription.sourceRoot : "");
 }
 
 export function getAngularProjects(basePath: string): IAngularProject[] {
     const angularConfig = getAngularConfig(basePath);
-    const projects: string[] = Object.keys(angularConfig.projects);
-    return projects.map((project) => {
+    const projectNames: string[] = Object.keys(angularConfig.projects);
+    return projectNames.map((projectName) => {
         return {
-            name: project,
-            path: getConfigPath(angularConfig.projects[project])
+            name: projectName,
+            path: getConfigPath(angularConfig.projects[projectName])
         };
     });
 }
 
 export interface IAngularConfig {
     newProjectRoot: string;
-    projects: any;
+    projects: {
+        [key: string]: IAngularJsonProject
+    };
+}
+
+interface IAngularJsonProject {
+    root?: string;
+    sourceRoot?: string;
+    projectType: string;
+    schematics: any;
+    architect: any;
 }
 
 export interface IAngularProject {
