@@ -3,6 +3,8 @@
 import {getAngularProjects} from "./src/getAngularProjects";
 import {getStagedFilesPerProject} from "./src/getStagedFilesPerProject";
 import {filterByFileExtension} from "./src/filterByFileExtension";
+import {getNgLintArguments, INgLintArguments} from "./src/getNgLintArguments";
+import {getErrorsAndWarning} from "./src/getErrorsAndWarnings";
 
 const sgf = require('staged-git-files');
 const npmWhich = require('npm-which')(process.cwd());
@@ -10,35 +12,43 @@ const execSync = require('child_process').execSync;
 
 
 sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
-//     console.log('Linting staged files...');
-//     npmWhich('ng', (err, ngPath) => {
-//
-//         const ngLintFileArgs = results
-//             .map((result) => result.filename)
-//             .filter((filename) => /.*\.(js|ts)$/.test(filename))
-//             //.map((filename) => '--file=' + filename)
-//             .join(' ');
-//         console.log('files: ', ngLintFileArgs);
-//
-//         const ngLintCommand = ngPath + ' lint --files ' + ngLintFileArgs;
-//         console.log(ngLintCommand);
-//         let result;
-//         try {
-//             execSync(ngLintCommand, { stdio: 'pipe'});
-//             console.log('Linting successful!')
-//         } catch(err) {
-//             console.log(err.stderr.toString());
-//             process.exit(1);
-//         }
-//     });
     const stagedFilePaths: string[] = results.map((file) => file.filename);
     const filteredFilePaths = filterByFileExtension(stagedFilePaths, ['ts']);
     const angularProjects = getAngularProjects(process.cwd());
     const filesPerProjectArray = getStagedFilesPerProject(filteredFilePaths, angularProjects);
+    const ngLintArguments: INgLintArguments[] = getNgLintArguments(filesPerProjectArray);
+
+    npmWhich('ng', (err: any, ngPath: string) => {
+        console.log('Linting staged files...');
+
+        let errorsAndWarnings: string[] = [];
+
+        ngLintArguments.forEach((ngLintArgument) => {
+
+            const ngLintCommand = `\"${ngPath}\" lint ${ngLintArgument.projectName} ${ngLintArgument.options} ${ngLintArgument.files}`;
+            try {
+                execSync(ngLintCommand, {stdio: 'pipe'});
+            } catch (e) {
+                const rawOutput = e.stdout.toString() + e.stderr.toString();
+                errorsAndWarnings = errorsAndWarnings.concat(getErrorsAndWarning(rawOutput));
+            }
+        });
+
+        if (errorsAndWarnings.length === 0) {
+            console.log('Linter successful!');
+        } else {
+            console.error('Linting failed! List of issues:');
+            errorsAndWarnings.forEach((errorOrWarning) => {
+                console.log(errorOrWarning);
+            });
+            process.exit(1);
+        }
+    });
 
 
 });
 
 interface IStagedGitFilesResult {
-    filename: string, status: 'Modified' | 'Changed' | 'Added'
+    filename: string,
+    status: 'Modified' | 'Changed' | 'Added'
 }
