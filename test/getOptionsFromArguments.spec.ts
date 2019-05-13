@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {DEFAULT_OPTIONS, getOptionsFromArguments, parseArgumentToOption} from "../src/parseOptions";
+import {DEFAULT_OPTIONS, getOptionsFromArguments, parseArgumentToOption} from "../src/getOptionsFromArguments";
 
 describe('parseArgumentToOption', () => {
     it('should properly parse valid arguments and map them into their type', () => {

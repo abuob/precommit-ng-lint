@@ -5,18 +5,21 @@ import {getStagedFilesPerProject} from "./src/getStagedFilesPerProject";
 import {filterByFileExtension} from "./src/filterByFileExtension";
 import {getNgLintArguments, INgLintArguments} from "./src/getNgLintArguments";
 import {getErrorsAndWarning} from "./src/getErrorsAndWarnings";
+import {getOptionsFromArguments} from "./src/getOptionsFromArguments";
 
 const sgf = require('staged-git-files');
 const npmWhich = require('npm-which')(process.cwd());
 const execSync = require('child_process').execSync;
 
+const options = getOptionsFromArguments(process.argv.slice(2));
 
 sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
     const stagedFilePaths: string[] = results.map((file) => file.filename);
     const filteredFilePaths = filterByFileExtension(stagedFilePaths, ['ts']);
+
     const angularProjects = getAngularProjects(process.cwd());
     const filesPerProjectArray = getStagedFilesPerProject(filteredFilePaths, angularProjects);
-    const ngLintArguments: INgLintArguments[] = getNgLintArguments(filesPerProjectArray);
+    const ngLintArguments: INgLintArguments[] = getNgLintArguments(filesPerProjectArray, options);
 
     npmWhich('ng', (err: any, ngPath: string) => {
         console.log('Linting staged files...');
