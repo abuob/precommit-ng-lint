@@ -26,9 +26,10 @@
   "scripts": {
     "build": "tsc",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
-    "prepublishOnly" : "npm test && npm run build"
+    "prepublishOnly": "npm test && npm run build"
   },
   "dependencies": {
+    "execa": "^1.0.0",
     "find-parent-dir": "^0.3.0",
     "npm-which": "^3.0.1",
     "staged-git-files": "^1.2.0"

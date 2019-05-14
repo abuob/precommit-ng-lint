@@ -1,32 +1,31 @@
 import {IFilesPerProject} from "./getStagedFilesPerProject";
 import {IPrecommitNgLintOptions} from "./getOptionsFromArguments";
 
-export function getNgLintArguments(filesPerProjectArray: IFilesPerProject[], precommitNgLintOptions: IPrecommitNgLintOptions): INgLintArguments[] {
+export function getNgLintCommands(filesPerProjectArray: IFilesPerProject[], precommitNgLintOptions: IPrecommitNgLintOptions): INgLintCommands[] {
     return filesPerProjectArray.map((filesPerProject) => {
         return {
             projectName: filesPerProject.project.name,
             options: getNgLintOptionsFromPrecommitNgLintOptions(precommitNgLintOptions),
             files: filesPerProject.files
-                .map((filePath) => `--files ${filePath}`)
-                .join(' ')
+                .map((filePath) => `--files=${filePath}`)
         }
     });
 }
 
-export function getNgLintOptionsFromPrecommitNgLintOptions(precommitNgLintOptions: IPrecommitNgLintOptions): string {
+export function getNgLintOptionsFromPrecommitNgLintOptions(precommitNgLintOptions: IPrecommitNgLintOptions): string[] {
     let ngLintOptions: string[] = []
     if(precommitNgLintOptions.fix) {
         ngLintOptions.push('--fix');
     }
-    return ngLintOptions.join(' ');
+    return ngLintOptions;
 }
 
 /**
  * Provides all information to call `ng lint`:
  * ng lint <projectName> <options> <files>
  */
-export interface INgLintArguments {
+export interface INgLintCommands {
     projectName: string;
-    options: string;
-    files: string;
+    options: string[];
+    files: string[];
 }
