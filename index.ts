@@ -29,7 +29,6 @@ sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
         ngLintCommands.forEach((ngLintCommand) => {
 
             try {
-                console.log(['lint', ngLintCommand.projectName, ...ngLintCommand.options, ...ngLintCommand.files]);
                 execa.sync(ngPath, ['lint', ngLintCommand.projectName, ...ngLintCommand.options, ...ngLintCommand.files], {stdio: 'pipe'});
             } catch (e) {
                 const rawOutput = e.stdout.toString() + e.stderr.toString();
