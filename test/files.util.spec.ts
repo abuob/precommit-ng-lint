@@ -1,8 +1,8 @@
 import {expect} from "chai";
-import {IAngularProject} from "../src/getAngularProjects";
-import {getStagedFilesPerProject, IFilesPerProject} from "../src/getStagedFilesPerProject";
+import {IAngularProject} from "../src/ngProject.util";
+import {FilesUtil, IFilesPerProject} from "../src/files.util";
 
-describe('getStagedFilesPerProject', () => {
+describe('FilesUtil.getStagedFilesPerProject', () => {
     it('should separate filePaths by projects', () => {
         const projects: IAngularProject[] = [
             { name: 'project-main', path: 'src' },
@@ -20,7 +20,7 @@ describe('getStagedFilesPerProject', () => {
             'projects/project-common/src/anotherPath.ts'
         ];
 
-        const filesPerProject: IFilesPerProject[] = getStagedFilesPerProject(filePaths, projects);
+        const filesPerProject: IFilesPerProject[] = FilesUtil.getStagedFilesPerProject(filePaths, projects);
 
         expect(filesPerProject).to.have.length(3);
 

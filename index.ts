@@ -4,10 +4,10 @@ const sgf = require('staged-git-files');
 const npmWhich = require('npm-which')(process.cwd());
 const execa = require('execa');
 
-import {getAngularProjects} from "./src/getAngularProjects";
-import {getStagedFilesPerProject} from "./src/getStagedFilesPerProject";
+import {NgProjectUtil} from "./src/ngProject.util";
+import {FilesUtil} from "./src/files.util";
 import {filterByFileExtension} from "./src/filterByFileExtension";
-import {getNgLintCommand, INgLintCommand} from "./src/getNgLintCommand";
+import {NgCommandUtil, INgLintCommand} from "./src/ngCommand.util";
 import {getErrorsAndWarning} from "./src/getErrorsAndWarnings";
 import {getOptionsFromArguments} from "./src/getOptionsFromArguments";
 
@@ -17,8 +17,8 @@ sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
     const stagedFilePaths: string[] = results.map((file) => file.filename);
     const filteredFilePaths = filterByFileExtension(stagedFilePaths, ['ts']);
 
-    const angularProjects = getAngularProjects(process.cwd());
-    const projectsAndTheirFiles = getStagedFilesPerProject(filteredFilePaths, angularProjects);
+    const angularProjects = NgProjectUtil.getAngularProjects(process.cwd());
+    const projectsAndTheirFiles = FilesUtil.getStagedFilesPerProject(filteredFilePaths, angularProjects);
 
     npmWhich('ng', (err: any, ngPath: string) => {
         console.log('Linting staged files...');
@@ -27,7 +27,7 @@ sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
 
         projectsAndTheirFiles.forEach((projectAndItsFiles) => {
 
-            const ngLintCommand: INgLintCommand = getNgLintCommand(projectAndItsFiles, options);
+            const ngLintCommand: INgLintCommand = NgCommandUtil.getNgLintCommand(projectAndItsFiles, options);
 
             try {
                 execa.sync(ngPath, ['lint', ngLintCommand.projectName, ...ngLintCommand.options, ...ngLintCommand.files], {stdio: 'pipe'});
