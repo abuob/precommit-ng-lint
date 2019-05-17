@@ -4,11 +4,11 @@ export const DEFAULT_OPTIONS: IPrecommitNgLintOptions = {
 };
 
 export function getOptionsFromArguments(argv: string[]): IPrecommitNgLintOptions {
-    const options = DEFAULT_OPTIONS;
+    const options = Object.assign( {}, DEFAULT_OPTIONS);
     argv.forEach((arg) => {
         let argOption = parseArgumentToOption(arg);
         switch (argOption.argType) {
-            case "NONE":
+            case "INVALID":
                 break;
             case "FIX":
                 options.fix = argOption.argValue;
@@ -31,7 +31,10 @@ export function parseArgumentToOption(arg: string): IOption {
     if (/^--fix=false$/.test(arg)) {
         return {argType: "FIX", argValue: false};
     }
-    return {argType: "NONE", argValue: null};
+    if (/^--angularConfig=.+\.json$/.test(arg)) {
+        return {argType: "ANGULAR_CONFIG", argValue: arg.replace('--angularConfig=', '')};
+    }
+    return {argType: "INVALID", argValue: null};
 }
 
 
@@ -45,4 +48,4 @@ export interface IOption {
     argValue: any;
 }
 
-declare type argumentType = 'NONE' | 'FIX' | 'ANGULAR_CONFIG';
+declare type argumentType = 'INVALID' | 'FIX' | 'ANGULAR_CONFIG';
