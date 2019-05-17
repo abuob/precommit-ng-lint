@@ -3,18 +3,18 @@ import {DEFAULT_OPTIONS, getOptionsFromArguments, parseArgumentToOption} from ".
 
 describe('parseArgumentToOption', () => {
     it('should properly parse valid arguments and map them into their type', () => {
-        expect(parseArgumentToOption('--fix')).to.equal('FIX_TRUE');
-        expect(parseArgumentToOption('--fix=true')).to.equal('FIX_TRUE');
-        expect(parseArgumentToOption('--fix=false')).to.equal('FIX_FALSE');
+        expect(parseArgumentToOption('--fix')).to.deep.equal({argType: 'FIX', argValue: true});
+        expect(parseArgumentToOption('--fix=true')).to.deep.equal({argType: 'FIX', argValue: true});
+        expect(parseArgumentToOption('--fix=false')).to.deep.equal({argType: 'FIX', argValue: false});
     });
 
     it('should properly map invalid arguments to NONE', () => {
-        expect(parseArgumentToOption('--fi')).to.equal('NONE');
-        expect(parseArgumentToOption('--fix = true')).to.equal('NONE');
-        expect(parseArgumentToOption('--fix=flse')).to.equal('NONE');
-        expect(parseArgumentToOption('-fix=false')).to.equal('NONE');
-        expect(parseArgumentToOption('fix')).to.equal('NONE');
-        expect(parseArgumentToOption('--')).to.equal('NONE');
+        expect(parseArgumentToOption('--fi')).to.deep.equal({argType: 'NONE', argValue: null});
+        expect(parseArgumentToOption('--fix = true')).to.deep.equal({argType: 'NONE', argValue: null});
+        expect(parseArgumentToOption('--fix=flse')).to.deep.equal({argType: 'NONE', argValue: null});
+        expect(parseArgumentToOption('-fix=false')).to.deep.equal({argType: 'NONE', argValue: null});
+        expect(parseArgumentToOption('fix')).to.deep.equal({argType: 'NONE', argValue: null});
+        expect(parseArgumentToOption('--')).to.deep.equal({argType: 'NONE', argValue: null});
     });
 });
 

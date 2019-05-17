@@ -1,14 +1,20 @@
+export const DEFAULT_OPTIONS: IPrecommitNgLintOptions = {
+    fix: false,
+    angularConfigName: 'angular.json'
+};
+
 export function getOptionsFromArguments(argv: string[]): IPrecommitNgLintOptions {
     const options = DEFAULT_OPTIONS;
     argv.forEach((arg) => {
-        switch (parseArgumentToOption(arg)) {
+        let argOption = parseArgumentToOption(arg);
+        switch (argOption.argType) {
             case "NONE":
                 break;
-            case "FIX_TRUE":
-                options.fix = true;
+            case "FIX":
+                options.fix = argOption.argValue;
                 break;
-            case "FIX_FALSE":
-                options.fix = false;
+            case "ANGULAR_CONFIG":
+                options.angularConfigName = argOption.argValue;
                 break;
             default:
                 break;
@@ -17,24 +23,26 @@ export function getOptionsFromArguments(argv: string[]): IPrecommitNgLintOptions
     return options;
 }
 
-export function parseArgumentToOption(arg: string): optionType {
+export function parseArgumentToOption(arg: string): IOption {
     arg = arg.trim();
     if (/^--fix(=true)?$/.test(arg)) {
-        return "FIX_TRUE";
+        return {argType: "FIX", argValue: true};
     }
     if (/^--fix=false$/.test(arg)) {
-        return "FIX_FALSE";
+        return {argType: "FIX", argValue: false};
     }
-    return 'NONE';
+    return {argType: "NONE", argValue: null};
 }
 
 
 export interface IPrecommitNgLintOptions {
     fix: boolean;
+    angularConfigName: string;
 }
 
-export const DEFAULT_OPTIONS: IPrecommitNgLintOptions = {
-    fix: false
-};
+export interface IOption {
+    argType: argumentType;
+    argValue: any;
+}
 
-declare type optionType = 'NONE' | 'FIX_TRUE' | 'FIX_FALSE';
+declare type argumentType = 'NONE' | 'FIX' | 'ANGULAR_CONFIG';

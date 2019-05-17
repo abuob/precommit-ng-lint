@@ -17,7 +17,7 @@ sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
     const stagedFilePaths: string[] = results.map((file) => file.filename);
     const filteredFilePaths = filterByFileExtension(stagedFilePaths, ['ts']);
 
-    const angularProjects = NgProjectUtil.getAngularProjects(process.cwd());
+    const angularProjects = NgProjectUtil.getAngularProjects(process.cwd(), options);
     const projectsAndTheirFiles = FilesUtil.getStagedFilesPerProject(filteredFilePaths, angularProjects);
 
     npmWhich('ng', (err: any, ngPath: string) => {
