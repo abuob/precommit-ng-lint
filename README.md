@@ -11,7 +11,7 @@ It can be used directly with [husky](https://github.com/typicode/husky) or in co
 ## Options
 
 | Option  |Default | Effect |
-| -------------------------------- |----------| ------------- |
+| ------------------------------------ |----------| ------------- |
 | `--fix` or `--fix=true`, `--fix=false`   | `false` | Adds the `--fix` parameter to `ng lint`  |
 | `--angularConfig=<fileName>.json`  | `angular.json` | If your `angular.json`-file has a different name. Depending on your setup, this might allow you usage for Angular -5 (with `angular-cli.json`). No guarantees given, mostly untested for older versions.  |
 
