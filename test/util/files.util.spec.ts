@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import {IAngularProject} from "../src/ngProject.util";
-import {FilesUtil, IFilesPerProject} from "../src/files.util";
+import {IAngularProject} from "../../src/util/ngProject.util";
+import {FilesUtil, IFilesPerProject} from "../../src/util/files.util";
 
 describe('FilesUtil.getStagedFilesPerProject', () => {
     it('should separate filePaths by projects', () => {

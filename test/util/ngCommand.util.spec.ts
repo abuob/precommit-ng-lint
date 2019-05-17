@@ -1,6 +1,6 @@
-import {INgLintCommand, NgCommandUtil} from "../src/ngCommand.util";
+import {INgLintCommand, NgCommandUtil} from "../../src/util/ngCommand.util";
 import {expect} from "chai";
-import {DEFAULT_OPTIONS} from "../src/getOptionsFromArguments";
+import {DEFAULT_OPTIONS} from "../../src/getOptionsFromArguments";
 
 describe('NgCommandUtil.getNgLintCommand', () => {
    it("should generate an object that contains everything that is needed to execute 'ng lint'", () => {

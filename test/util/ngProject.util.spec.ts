@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {NgProjectUtil} from "../src/ngProject.util";
+import {NgProjectUtil} from "../../src/util/ngProject.util";
 
 describe('NgProjectUtil.getAngularProjects', () => {
     it('should properly fetch all angular projects and their source-paths from the angular.json', () => {

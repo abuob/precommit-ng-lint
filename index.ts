@@ -4,10 +4,10 @@ const sgf = require('staged-git-files');
 const npmWhich = require('npm-which')(process.cwd());
 const execa = require('execa');
 
-import {NgProjectUtil} from "./src/ngProject.util";
-import {FilesUtil} from "./src/files.util";
+import {NgProjectUtil} from "./src/util/ngProject.util";
+import {FilesUtil} from "./src/util/files.util";
 import {filterByFileExtension} from "./src/filterByFileExtension";
-import {NgCommandUtil, INgLintCommand} from "./src/ngCommand.util";
+import {NgCommandUtil, INgLintCommand} from "./src/util/ngCommand.util";
 import {getErrorsAndWarning} from "./src/getErrorsAndWarnings";
 import {getOptionsFromArguments} from "./src/getOptionsFromArguments";
 

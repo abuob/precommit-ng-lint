@@ -1,5 +1,5 @@
 import {IFilesPerProject} from "./files.util";
-import {IPrecommitNgLintOptions} from "./getOptionsFromArguments";
+import {IPrecommitNgLintOptions} from "../getOptionsFromArguments";
 
 export class NgCommandUtil {
     public static getNgLintCommand(projectAndItsFiles: IFilesPerProject, precommitNgLintOptions: IPrecommitNgLintOptions): INgLintCommand {
