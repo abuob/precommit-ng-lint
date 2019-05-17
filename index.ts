@@ -1,15 +1,15 @@
 #! /usr/bin/env node
 
-import {getAngularProjects} from "./src/getAngularProjects";
-import {getStagedFilesPerProject} from "./src/getStagedFilesPerProject";
-import {filterByFileExtension} from "./src/filterByFileExtension";
-import {getNgLintCommands, INgLintCommands} from "./src/getNgLintCommands";
-import {getErrorsAndWarning} from "./src/getErrorsAndWarnings";
-import {getOptionsFromArguments} from "./src/getOptionsFromArguments";
-
 const sgf = require('staged-git-files');
 const npmWhich = require('npm-which')(process.cwd());
 const execa = require('execa');
+
+import {getAngularProjects} from "./src/getAngularProjects";
+import {getStagedFilesPerProject} from "./src/getStagedFilesPerProject";
+import {filterByFileExtension} from "./src/filterByFileExtension";
+import {getNgLintCommand, INgLintCommand} from "./src/getNgLintCommand";
+import {getErrorsAndWarning} from "./src/getErrorsAndWarnings";
+import {getOptionsFromArguments} from "./src/getOptionsFromArguments";
 
 const options = getOptionsFromArguments(process.argv.slice(2));
 
@@ -18,15 +18,16 @@ sgf(['ACM'], (err: any, results: IStagedGitFilesResult[]) => {
     const filteredFilePaths = filterByFileExtension(stagedFilePaths, ['ts']);
 
     const angularProjects = getAngularProjects(process.cwd());
-    const filesPerProjectArray = getStagedFilesPerProject(filteredFilePaths, angularProjects);
-    const ngLintCommands: INgLintCommands[] = getNgLintCommands(filesPerProjectArray, options);
+    const projectsAndTheirFiles = getStagedFilesPerProject(filteredFilePaths, angularProjects);
 
     npmWhich('ng', (err: any, ngPath: string) => {
         console.log('Linting staged files...');
 
         let errorsAndWarnings: string[] = [];
 
-        ngLintCommands.forEach((ngLintCommand) => {
+        projectsAndTheirFiles.forEach((projectAndItsFiles) => {
+
+            const ngLintCommand: INgLintCommand = getNgLintCommand(projectAndItsFiles, options);
 
             try {
                 execa.sync(ngPath, ['lint', ngLintCommand.projectName, ...ngLintCommand.options, ...ngLintCommand.files], {stdio: 'pipe'});
