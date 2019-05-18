@@ -1,18 +1,17 @@
-import {IFilesPerProject} from "./files.util";
-import {IPrecommitNgLintOptions} from "../getOptionsFromArguments";
+import { IPrecommitNgLintOptions } from '../getOptionsFromArguments';
+import { IFilesPerProject } from './files.util';
 
 export class NgCommandUtil {
     public static getNgLintCommand(projectAndItsFiles: IFilesPerProject, precommitNgLintOptions: IPrecommitNgLintOptions): INgLintCommand {
         return {
-            projectName: projectAndItsFiles.project.name,
+            files: projectAndItsFiles.files.map(filePath => `--files=${filePath}`),
             options: NgCommandUtil.getNgLintOptionsFromPrecommitNgLintOptions(precommitNgLintOptions),
-            files: projectAndItsFiles.files
-                .map((filePath) => `--files=${filePath}`)
-        }
+            projectName: projectAndItsFiles.project.name
+        };
     }
 
     private static getNgLintOptionsFromPrecommitNgLintOptions(precommitNgLintOptions: IPrecommitNgLintOptions): string[] {
-        let ngLintOptions: string[] = []
+        const ngLintOptions: string[] = [];
         if (precommitNgLintOptions.fix) {
             ngLintOptions.push('--fix');
         }

@@ -1,19 +1,19 @@
 export const DEFAULT_OPTIONS: IPrecommitNgLintOptions = {
-    fix: false,
-    angularConfigName: 'angular.json'
+    angularConfigName: 'angular.json',
+    fix: false
 };
 
 export function getOptionsFromArguments(argv: string[]): IPrecommitNgLintOptions {
-    const options = Object.assign( {}, DEFAULT_OPTIONS);
-    argv.forEach((arg) => {
-        let argOption = parseArgumentToOption(arg);
+    const options = Object.assign({}, DEFAULT_OPTIONS);
+    argv.forEach(arg => {
+        const argOption = parseArgumentToOption(arg);
         switch (argOption.argType) {
-            case "INVALID":
+            case 'INVALID':
                 break;
-            case "FIX":
+            case 'FIX':
                 options.fix = argOption.argValue;
                 break;
-            case "ANGULAR_CONFIG":
+            case 'ANGULAR_CONFIG':
                 options.angularConfigName = argOption.argValue;
                 break;
             default:
@@ -26,17 +26,16 @@ export function getOptionsFromArguments(argv: string[]): IPrecommitNgLintOptions
 export function parseArgumentToOption(arg: string): IOption {
     arg = arg.trim();
     if (/^--fix(=true)?$/.test(arg)) {
-        return {argType: "FIX", argValue: true};
+        return { argType: 'FIX', argValue: true };
     }
     if (/^--fix=false$/.test(arg)) {
-        return {argType: "FIX", argValue: false};
+        return { argType: 'FIX', argValue: false };
     }
     if (/^--angularConfig=.+\.json$/.test(arg)) {
-        return {argType: "ANGULAR_CONFIG", argValue: arg.replace('--angularConfig=', '')};
+        return { argType: 'ANGULAR_CONFIG', argValue: arg.replace('--angularConfig=', '') };
     }
-    return {argType: "INVALID", argValue: null};
+    return { argType: 'INVALID', argValue: null };
 }
-
 
 export interface IPrecommitNgLintOptions {
     fix: boolean;

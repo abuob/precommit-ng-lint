@@ -1,4 +1,4 @@
-import {IPrecommitNgLintOptions} from "../getOptionsFromArguments";
+import { IPrecommitNgLintOptions } from '../getOptionsFromArguments';
 
 const findParentDir = require('find-parent-dir');
 
@@ -6,7 +6,7 @@ export class NgProjectUtil {
     public static getAngularProjects(basePath: string, options: IPrecommitNgLintOptions): IAngularProject[] {
         const angularConfig = NgProjectUtil.getAngularConfig(basePath, options.angularConfigName);
         const projectNames: string[] = Object.keys(angularConfig.projects);
-        return projectNames.map((projectName) => {
+        return projectNames.map(projectName => {
             return {
                 name: projectName,
                 path: NgProjectUtil.getConfigPath(angularConfig.projects[projectName])
@@ -15,8 +15,9 @@ export class NgProjectUtil {
     }
 
     private static getConfigPath(projectDescription: IAngularJsonProject): string {
-        return (projectDescription.root ? projectDescription.root : "")
-            + (projectDescription.sourceRoot ? projectDescription.sourceRoot : "");
+        return (
+            (projectDescription.root ? projectDescription.root : '') + (projectDescription.sourceRoot ? projectDescription.sourceRoot : '')
+        );
     }
 
     private static getAngularConfig(basePath: string, angularConfigFileName: string): IAngularConfig {
@@ -29,7 +30,7 @@ export class NgProjectUtil {
 export interface IAngularConfig {
     newProjectRoot: string;
     projects: {
-        [key: string]: IAngularJsonProject
+        [key: string]: IAngularJsonProject;
     };
 }
 
