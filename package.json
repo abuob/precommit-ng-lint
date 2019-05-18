@@ -1,6 +1,6 @@
 {
   "name": "precommit-ng-lint",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Executes ng lint on all staged files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
