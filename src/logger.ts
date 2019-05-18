@@ -38,7 +38,7 @@ export class Logger {
     }
 
     public static findFileAndFormat(errorOrWarning: string, formatter: (str: string) => string): string {
-        const regExp = /(?!.*(\/|\\)).+?\.ts\[[1-9, ]+\]/;
+        const regExp = /[^\\/]+\.ts\[[0-9, ]+\]/;
         return Logger.matchRegExpAndFormat(errorOrWarning, regExp, formatter);
     }
 
