@@ -22,7 +22,7 @@ sgf(['ACM'], (sgfErr: any, results: IStagedGitFilesResult[]) => {
     const projectsAndTheirFiles = FilesUtil.getStagedFilesPerProject(filteredFilePaths, angularProjects);
 
     npmWhich('ng', (npmWhichErr: any, ngPath: string) => {
-        Logger.info('Linting staged files...');
+        Logger.initLinterMessage();
 
         let errorsAndWarnings: string[] = [];
 
@@ -40,12 +40,9 @@ sgf(['ACM'], (sgfErr: any, results: IStagedGitFilesResult[]) => {
         });
 
         if (errorsAndWarnings.length === 0) {
-            Logger.info('Linter successful!');
+            Logger.linterSuccessMessage();
         } else {
-            Logger.error('Linting failed! List of issues:');
-            errorsAndWarnings.forEach(errorOrWarning => {
-                Logger.info(errorOrWarning);
-            });
+            Logger.linterFailureMessage(errorsAndWarnings);
             process.exit(1);
         }
     });

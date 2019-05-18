@@ -30,6 +30,7 @@
     "prepublishOnly": "npm test && npm run build"
   },
   "dependencies": {
+    "chalk": "^2.4.2",
     "execa": "^1.0.0",
     "find-parent-dir": "^0.3.0",
     "npm-which": "^3.0.1",
